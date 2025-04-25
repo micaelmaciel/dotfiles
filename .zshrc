@@ -3,6 +3,7 @@ source '/usr/share/zsh/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh'
 source '/usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh'
 source '/usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh'
 
+unsetopt pathdirs
 
 PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} ) %{$fg[cyan]%}%c%{$reset_color%} "
 
@@ -20,7 +21,7 @@ bindkey -e
 
 # The following lines were added by compinstall
 
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'r:|[._-]=** r:|=**'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu select=3
 zstyle :compinstall filename '/home/mik/.zshrc'
 
@@ -33,3 +34,9 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/
 
 alias clear="printf '\033[2J\033[3J\033[1;1H'"
 alias ls="ls --color"
+alias owner="pacman -Qo"
+alias exes="pacman -Ql"
+
+# Created by `pipx` on 2025-04-24 01:27:41
+export PATH="$PATH:/home/mik/.local/bin"
+

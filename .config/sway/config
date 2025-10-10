@@ -29,6 +29,9 @@ output * bg /home/mik/Pictures/outer_wilds.webp fill
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
+# custom stuff
+bindsym $mod+n exec swaync-client -t
+
 ### Idle configuration
 #
 # Example configuration:
@@ -42,8 +45,12 @@ exec swayidle -w \
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
+# autostart
 exec nm-applet
-exec --no-startup-id waybar
+exec autotiling -l 2
+exec swaync
+exec sway-audio-idle-inhibit
+
 
 
 ### Input configuration
@@ -77,10 +84,13 @@ xkb_layout br
     bindsym $mod+Return exec $term
 
     # Kill focused window
-    bindsym $mod+Shift+q kill
+    bindsym $mod+q kill
 
     # Start your launcher
     bindsym $mod+d exec $menu
+
+	# Start sound manager
+	bindsym $mod+Shift+v exec $pavucontrol
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -95,6 +105,9 @@ xkb_layout br
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
+
+    bindsym $mod+alt+a as-cmd -b
+
 # Moving around:
 #
     # Move your focus around
@@ -218,24 +231,34 @@ bindsym $mod+r mode "resize"
     bindsym --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     # Special key to take a screenshot with grim
-    bindsym Print exec grim
 
+# Screenshot
+
+# ~/.config/sway/config
+
+# Screenshot a window
+bindsym $mod+p exec sway-screenshot -m window
+# Screenshot a monitor
+bindsym $mod+Alt+p exec sway-screenshot -m output
+# Screenshot a region
+bindsym $mod+Shift+p exec sway-screenshot -m region
 
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-# bar {
-#
-#     # When the status_command prints a new line to stdout, swaybar updates.
-#     # The default just shows the current date and time.
-#     status_command waybar
-#
-#     colors {
-#         statusline #ffffff
-#         background #323232
-#         inactive_workspace #32323200 #32323200 #5c5c5c
-#     }
-# }
+bar {
+
+    swaybar_command waybar
+
+    position top
+
+    hidden_state hide
+
+    mode hide
+
+    modifier $mod
+
+}
 
 

@@ -143,7 +143,8 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+vim.cmd(":set nolist")
+-- vim.opt.listchars = { tab = " ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
@@ -158,6 +159,8 @@ vim.opt.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.opt.confirm = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -194,6 +197,22 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+vim.keymap.set("n", "<leader>ev", "<Cmd>Vex<CR>", { desc = "Open [E]xplorer in [V]ertical split" })
+vim.keymap.set("n", "<leader>ec", "<Cmd>Ex<CR>", { desc = "Open [E]xplorer in [C]urrent buffer" })
+vim.keymap.set("n", "<leader>eh", "<Cmd>Sex<CR>", { desc = "Open [E]xplorer in [H]orizontal split" })
+vim.keymap.set("n", "<leader>er", "<Cmd>Rex<CR>", { desc = "[R]eopen explorer" })
+
+vim.keymap.set("n", "<leader>tv", "<Cmd>vert ter<CR>", { desc = "Open [T]erminal in [V]ertical split" })
+vim.keymap.set("n", "<leader>tc", "<Cmd>ter<CR>", { desc = "Open [T]erminal in [C]urrent buffer" })
+vim.keymap.set("n", "<leader>th", "<Cmd>sp ter<CR>", { desc = "Open [T]erminal in [H]orizontal split" })
+
+-- brackets
+vim.keymap.set("i", "(", "()<left>")
+vim.keymap.set("i", "[", "[]<left>")
+vim.keymap.set("i", "{", "{}<left>")
+vim.keymap.set("i", "'", "''<left>")
+vim.keymap.set("i", '"', '""<left>')
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -338,8 +357,9 @@ require("lazy").setup({
 			-- Document existing key chains
 			spec = {
 				{ "<leader>s", group = "[S]earch" },
-				{ "<leader>t", group = "[T]oggle" },
+				{ "<leader>t", group = "[T]erminal/[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+				{ "<leader>e", group = "[E]xplorer" },
 			},
 		},
 	},
@@ -623,9 +643,9 @@ require("lazy").setup({
 						client
 						and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
 					then
-						map("<leader>th", function()
+						map("<leader>tt", function()
 							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-						end, "[T]oggle Inlay [H]ints")
+						end, "[T]oggle Inlay [T]ips/hints")
 					end
 				end,
 			})
@@ -839,7 +859,7 @@ require("lazy").setup({
 				-- <c-k>: Toggle signature help
 				--
 				-- See :h blink-cmp-config-keymap for defining your own keymap
-				preset = "default",
+				preset = "enter",
 
 				-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
 				--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
